@@ -14,7 +14,6 @@ export class UsersController {
   @ApiResponse({status: 200, type: [Users]})
   @Get('/users/showAll')
   getAll() {
-    // return new Users
     return this.usersService.getAllUsers()
   }
 
