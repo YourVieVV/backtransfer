@@ -19,6 +19,11 @@ export class UsersService {
   //   return this.userModel.findById(id)
   // }
 
+  async getUserByEmail(email:string): Promise<Users> {
+    const user = await this.userModel.findOne({email, include: {all: true}})
+    return user;
+  }
+
   async createUser(userDto: CreateUsersDto) {
     const newUser = await new this.userModel(userDto)
     const role = await this.rolesService.getRoleByValue("INDIVIDUAL")
