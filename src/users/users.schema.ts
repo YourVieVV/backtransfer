@@ -20,6 +20,14 @@ export class Users {
   @Prop({ required: true })
   password: string;
 
+  @ApiProperty({example:"true", description:'Забанен, или нет'})
+  @Prop({ defaultValue: false })
+  banned: boolean;
+
+  @ApiProperty({example:"За мошенничество", description:'Причина бана'})
+  @Prop({ allowNull: true })
+  banReason: string;
+
   @Prop({ type: mongoose.Schema.Types.Array, ref: 'Roles' })
   roles: Roles;
 }
