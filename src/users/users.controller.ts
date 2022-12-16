@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards, UsePipes } from "@nestjs/common";
 import { CreateUsersDto } from "./dto/create-users.dto";
 import { Users } from "./users.schema";
 import { UsersService } from "./users.service";
@@ -8,6 +8,7 @@ import { Roles } from "../auth/roles-auth.decorator";
 import { RolesGuard } from "../auth/roles-guard";
 import { AddRoleDto } from "./dto/add-role.dto";
 import { BanUserDto } from "./dto/ban-user.dto";
+import { ValidationPipe } from "../pipes/validation.pipe";
 
 @ApiTags('Пользователи')
 @Controller(`/api/users`)
@@ -50,11 +51,11 @@ export class UsersController {
   }
 
   // Используется в авторизации
-  // @ApiOperation({summary: 'Создание пользователя'})
-  // @ApiResponse({status: 200, type: Users})
-  // @Post('/create')
-  // create(@Body() CreateUsersDto: CreateUsersDto): Promise<Users>{
-  //   return this.usersService.createUser(CreateUsersDto);
-  // }
+  @ApiOperation({summary: 'Создание пользователя'})
+  @ApiResponse({status: 200, type: Users})
+  @Post('/create')
+  create(@Body() CreateUsersDto: CreateUsersDto): Promise<Users>{
+    return this.usersService.createUser(CreateUsersDto);
+  }
 
 }
