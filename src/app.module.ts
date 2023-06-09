@@ -6,15 +6,14 @@ import { ConfigModule } from "@nestjs/config";
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 
-
 @Module({
   controllers: [],
   providers: [],
   imports:[
     ConfigModule.forRoot({
-    envFilePath: `.env.${process.env.NODE_ENV}`
+    envFilePath: `.env.development`
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL),
+    MongooseModule.forRoot('mongodb://root:example@localhost:27017/'),
     UsersModule,
     RolesModule,
     AuthModule,

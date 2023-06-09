@@ -21,8 +21,8 @@ export class UsersService {
   //   return this.userModel.findById(id)
   // }
 
-  async getUserByEmail(email:string): Promise<Users> {
-    const user = await this.userModel.findOne({email, include: {all: true}})
+  async getUserByLogin(login:string): Promise<Users> {
+    const user = await this.userModel.findOne({login, include: {all: true}})
     return user;
   }
 

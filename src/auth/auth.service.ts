@@ -4,6 +4,7 @@ import { UsersService } from "../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import { Users } from "../users/users.schema";
+import { LoginUsersDto } from "../users/dto/login-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -11,16 +12,16 @@ export class AuthService {
   constructor(private userService: UsersService,
               private jwtService: JwtService) {}
 
-  async login(userDto: CreateUsersDto){
+  async login(userDto: LoginUsersDto){
     const user = await this.validateUser(userDto);
     return this.generateToken(user);
   }
 
 
   async registration(userDto: CreateUsersDto){
-    const candidate = await this.userService.getUserByEmail(userDto.email);
+    const candidate = await this.userService.getUserByLogin(userDto.login);
     if (candidate){
-      throw new HttpException('Пользователь с таким email существует', HttpStatus.BAD_REQUEST)
+      throw new HttpException('Пользователь с таким login существует', HttpStatus.BAD_REQUEST)
     }
     const hashPassword = await bcrypt.hash(userDto.password, 7);
     const user = await this.userService.createUser(({...userDto, password: hashPassword}))
@@ -34,8 +35,8 @@ export class AuthService {
     }
   }
 
-  private async validateUser(userDto: CreateUsersDto) {
-    const user = await this.userService.getUserByEmail(userDto.email);
+  private async validateUser(userDto: LoginUsersDto) {
+    const user = await this.userService.getUserByLogin(userDto.login);
     const passwordEquals = await bcrypt.compare(userDto.password, user.password);
     if (user && passwordEquals){
       return user;
